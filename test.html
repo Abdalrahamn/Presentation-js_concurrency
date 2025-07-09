@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Presentation Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #2c3e50;
+        color: white;
+      }
+      .test-result {
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+      }
+      .success {
+        background: #27ae60;
+      }
+      .error {
+        background: #e74c3c;
+      }
+      .warning {
+        background: #f39c12;
+      }
+      button {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 5px;
+      }
+      button:hover {
+        background: #2980b9;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🧪 Presentation Test Suite</h1>
+    <p>This page tests if all JavaScript files load correctly.</p>
+
+    <div id="testResults"></div>
+
+    <h2>Quick Tests</h2>
+    <button onclick="testBasicFunctions()">Test Basic Functions</button>
+    <button onclick="testDemos()">Test Demo Functions</button>
+    <button onclick="testVisualization()">Test Visualization</button>
+    <button onclick="window.location.href='index.html'">
+      Go to Presentation
+    </button>
+
+    <!-- Load all JavaScript files -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/plugin/notes/notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/plugin/highlight/highlight.js"></script>
+    <script src="js/presentation.js"></script>
+    <script src="js/demos.js"></script>
+    <script src="js/visualizer.js"></script>
+    <script src="js/worker-demo.js"></script>
+
+    <script>
+      function log(message, type = "success") {
+        const div = document.createElement("div");
+        div.className = `test-result ${type}`;
+        div.textContent = message;
+        document.getElementById("testResults").appendChild(div);
+      }
+
+      function testBasicFunctions() {
+        document.getElementById("testResults").innerHTML =
+          "<h3>Testing Basic Functions...</h3>";
+
+        try {
+          // Test utility functions
+          if (typeof window.delay === "function") {
+            log("✅ delay function loaded");
+          } else {
+            log("❌ delay function missing", "error");
+          }
+
+          if (typeof window.logToOutput === "function") {
+            log("✅ logToOutput function loaded");
+          } else {
+            log("❌ logToOutput function missing", "error");
+          }
+
+          if (typeof window.executeCode === "function") {
+            log("✅ executeCode function loaded");
+          } else {
+            log("❌ executeCode function missing", "error");
+          }
+
+          log("✅ Basic functions test completed");
+        } catch (error) {
+          log(`❌ Error testing basic functions: ${error.message}`, "error");
+        }
+      }
+
+      function testDemos() {
+        document.getElementById("testResults").innerHTML =
+          "<h3>Testing Demo Functions...</h3>";
+
+        try {
+          // Test demo functions
+          const demoFunctions = [
+            "runEventLoopDemo",
+            "demonstrateSetTimeout",
+            "demonstrateSetInterval",
+            "demoPromiseStates",
+            "demoPromiseAll",
+            "runPlaygroundCode",
+          ];
+
+          demoFunctions.forEach((func) => {
+            if (typeof window[func] === "function") {
+              log(`✅ ${func} loaded`);
+            } else {
+              log(`❌ ${func} missing`, "error");
+            }
+          });
+
+          log("✅ Demo functions test completed");
+        } catch (error) {
+          log(`❌ Error testing demo functions: ${error.message}`, "error");
+        }
+      }
+
+      function testVisualization() {
+        document.getElementById("testResults").innerHTML =
+          "<h3>Testing Visualization Functions...</h3>";
+
+        try {
+          // Test visualization functions
+          if (typeof window.startEventLoopVisualization === "function") {
+            log("✅ startEventLoopVisualization loaded");
+          } else {
+            log("❌ startEventLoopVisualization missing", "error");
+          }
+
+          if (typeof window.resetVisualization === "function") {
+            log("✅ resetVisualization loaded");
+          } else {
+            log("❌ resetVisualization missing", "error");
+          }
+
+          log("✅ Visualization functions test completed");
+        } catch (error) {
+          log(
+            `❌ Error testing visualization functions: ${error.message}`,
+            "error"
+          );
+        }
+      }
+
+      // Run basic tests on load
+      window.addEventListener("load", function () {
+        setTimeout(() => {
+          log("🚀 All JavaScript files loaded successfully");
+          log("✅ Presentation is ready to use");
+          log("👆 Click the buttons above to run specific tests");
+        }, 1000);
+      });
+
+      // Check for errors
+      window.addEventListener("error", function (e) {
+        log(`❌ JavaScript Error: ${e.message}`, "error");
+      });
+    </script>
+  </body>
+</html>

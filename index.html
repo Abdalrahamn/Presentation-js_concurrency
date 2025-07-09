@@ -1,0 +1,1921 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Concurrency & Event Loop</title>
+    <link rel="stylesheet" href="css/modern-slider.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+    />
+  </head>
+  <body>
+    <div class="slider-container">
+      <!-- Navigation -->
+      <div class="slider-nav">
+        <button class="nav-btn prev-btn" onclick="previousSlide()">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="nav-btn next-btn" onclick="nextSlide()">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="slide-counter">
+          <span id="currentSlide">1</span> / <span id="totalSlides">35</span>
+        </div>
+      </div>
+
+      <!-- Slides -->
+      <div class="slides-wrapper">
+        <!-- Slide 1: Title -->
+        <div class="slide">
+          <div class="slide-content">
+            <div class="title-slide">
+              <h1>
+                <i class="fas fa-code"></i> JavaScript Concurrency & Event Loop
+              </h1>
+              <p class="subtitle">
+                Understanding Asynchronous JavaScript and the Event Loop
+              </p>
+              <div class="author">
+                <p>📚 Interactive Learning Experience</p>
+                <p class="learning-goals">
+                  Master async programming, promises, and performance patterns
+                </p>
+              </div>
+            </div>
+            <div class="main-topics">
+              <h3><i class="fas fa-list"></i> Main Topics</h3>
+              <div class="topics-list">
+                <div class="topic-item">
+                  <i class="fas fa-cogs"></i>
+                  <span>JavaScript Runtime & Event Loop</span>
+                </div>
+                <div class="topic-item">
+                  <i class="fas fa-phone"></i>
+                  <span>Callbacks & Asynchronous Programming</span>
+                </div>
+                <div class="topic-item">
+                  <i class="fas fa-handshake"></i>
+                  <span>Promises & Async/Await</span>
+                </div>
+                <div class="topic-item">
+                  <i class="fas fa-users"></i>
+                  <span>Web Workers & Threading</span>
+                </div>
+                <div class="topic-item">
+                  <i class="fas fa-tachometer-alt"></i>
+                  <span>Performance & Best Practices</span>
+                </div>
+                <div class="topic-item">
+                  <i class="fas fa-code"></i>
+                  <span>Interactive Demos & Visualization</span>
+                </div>
+              </div>
+            </div>
+            <div class="navigation-hint">
+              <p><i class="fas fa-arrow-right"></i> Use arrows to navigate</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2: What is JavaScript? -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-code"></i> What is JavaScript?</h2>
+            <div class="concept-visual">
+              <div class="concept-card">
+                <i class="fas fa-lightbulb"></i>
+                <h3>High-Level Language</h3>
+                <p>Interpreted, dynamically typed programming language</p>
+              </div>
+              <div class="concept-card">
+                <i class="fas fa-globe"></i>
+                <h3>Web Native</h3>
+                <p>Originally designed for web browsers, now everywhere</p>
+              </div>
+              <div class="concept-card">
+                <i class="fas fa-puzzle-piece"></i>
+                <h3>Multi-Paradigm</h3>
+                <p>
+                  Supports procedural, object-oriented, and functional
+                  programming
+                </p>
+              </div>
+            </div>
+            <div class="js-features">
+              <h3>Key Characteristics</h3>
+              <ul class="feature-list">
+                <li><i class="fas fa-check"></i> Dynamic typing</li>
+                <li><i class="fas fa-check"></i> First-class functions</li>
+                <li>
+                  <i class="fas fa-check"></i> Prototype-based inheritance
+                </li>
+                <li><i class="fas fa-check"></i> Event-driven programming</li>
+                <li><i class="fas fa-check"></i> Asynchronous by nature</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3: Compiler vs Runtime -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-cogs"></i> Compiler vs Runtime</h2>
+            <div class="compiler-runtime-comparison">
+              <div class="comparison-section">
+                <div class="section-header compiler">
+                  <i class="fas fa-tools"></i>
+                  <h3>Compiler</h3>
+                  <p>Translates source code to machine code</p>
+                </div>
+                <div class="process-flow">
+                  <div class="flow-step">
+                    <div class="step-box source">Source Code</div>
+                    <div class="arrow">→</div>
+                  </div>
+                  <div class="flow-step">
+                    <div class="step-box compiler">Compiler</div>
+                    <div class="arrow">→</div>
+                  </div>
+                  <div class="flow-step">
+                    <div class="step-box machine">Machine Code</div>
+                    <div class="arrow">→</div>
+                  </div>
+                  <div class="flow-step">
+                    <div class="step-box output">Output</div>
+                  </div>
+                </div>
+                <div class="characteristics">
+                  <h4>Examples: C, C++, Rust, Go</h4>
+                  <ul>
+                    <li><i class="fas fa-check"></i> Fast execution</li>
+                    <li><i class="fas fa-check"></i> Optimized code</li>
+                    <li><i class="fas fa-times"></i> Compilation time</li>
+                    <li><i class="fas fa-times"></i> Platform specific</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="comparison-section">
+                <div class="section-header runtime">
+                  <i class="fas fa-play"></i>
+                  <h3>Runtime/Interpreter</h3>
+                  <p>Executes code line by line at runtime</p>
+                </div>
+                <div class="process-flow">
+                  <div class="flow-step">
+                    <div class="step-box source">Source Code</div>
+                    <div class="arrow">→</div>
+                  </div>
+                  <div class="flow-step">
+                    <div class="step-box interpreter">Interpreter</div>
+                    <div class="arrow">→</div>
+                  </div>
+                  <div class="flow-step">
+                    <div class="step-box output">Output</div>
+                  </div>
+                </div>
+                <div class="characteristics">
+                  <h4>Examples: JavaScript, Python, Ruby</h4>
+                  <ul>
+                    <li><i class="fas fa-check"></i> Quick development</li>
+                    <li><i class="fas fa-check"></i> Platform independent</li>
+                    <li><i class="fas fa-times"></i> Slower execution</li>
+                    <li><i class="fas fa-times"></i> Runtime errors</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="js-note">
+              <i class="fas fa-info-circle"></i>
+              <p>
+                <strong>JavaScript:</strong> Modern JS engines use JIT
+                (Just-In-Time) compilation - a hybrid approach that compiles
+                frequently used code for better performance!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 4: JavaScript Runtime Environment -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-cogs"></i> JavaScript Runtime Environment</h2>
+            <div class="runtime-diagram">
+              <div class="runtime-component">
+                <div class="component-header">
+                  <i class="fas fa-microchip"></i>
+                  <h3>JavaScript Engine</h3>
+                </div>
+                <div class="component-details">
+                  <p><strong>V8 (Chrome/Node.js)</strong></p>
+                  <p><strong>SpiderMonkey (Firefox)</strong></p>
+                  <p><strong>JavaScriptCore (Safari)</strong></p>
+                  <ul>
+                    <li>Memory Heap</li>
+                    <li>Call Stack</li>
+                    <li>Garbage Collector</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="runtime-component">
+                <div class="component-header">
+                  <i class="fas fa-tools"></i>
+                  <h3>Runtime APIs</h3>
+                </div>
+                <div class="component-details">
+                  <p><strong>Browser APIs</strong></p>
+                  <ul>
+                    <li>DOM API</li>
+                    <li>Fetch API</li>
+                    <li>Web Storage</li>
+                    <li>Timers (setTimeout/setInterval)</li>
+                  </ul>
+                  <p><strong>Node.js APIs</strong></p>
+                  <ul>
+                    <li>File System</li>
+                    <li>HTTP</li>
+                    <li>Process</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 5: Single vs Multi-Threading -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-sitemap"></i> Single vs Multi-Threading</h2>
+            <div class="threading-comparison">
+              <div class="threading-section">
+                <div class="thread-header single">
+                  <i class="fas fa-arrow-right"></i>
+                  <h3>Single-Threaded</h3>
+                  <p>JavaScript, Python (GIL), Ruby</p>
+                </div>
+                <div class="thread-visual">
+                  <div class="thread-lane single">
+                    <div class="thread-label">Main Thread</div>
+                    <div class="task-flow">
+                      <div class="task">Task 1</div>
+                      <div class="task">Task 2</div>
+                      <div class="task">Task 3</div>
+                      <div class="task">Task 4</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="thread-pros-cons">
+                  <div class="pros">
+                    <h4><i class="fas fa-check-circle"></i> Advantages</h4>
+                    <ul>
+                      <li>No race conditions</li>
+                      <li>Simple debugging</li>
+                      <li>Predictable execution</li>
+                      <li>Lower memory usage</li>
+                    </ul>
+                  </div>
+                  <div class="cons">
+                    <h4><i class="fas fa-times-circle"></i> Disadvantages</h4>
+                    <ul>
+                      <li>Blocking operations</li>
+                      <li>No CPU parallelism</li>
+                      <li>UI can freeze</li>
+                      <li>Limited scalability</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="threading-section">
+                <div class="thread-header multi">
+                  <i class="fas fa-stream"></i>
+                  <h3>Multi-Threaded</h3>
+                  <p>Java, C#, C++, Go</p>
+                </div>
+                <div class="thread-visual">
+                  <div class="thread-lane multi">
+                    <div class="thread-label">Thread 1</div>
+                    <div class="task-flow">
+                      <div class="task">Task 1</div>
+                      <div class="task">Task 5</div>
+                    </div>
+                  </div>
+                  <div class="thread-lane multi">
+                    <div class="thread-label">Thread 2</div>
+                    <div class="task-flow">
+                      <div class="task">Task 2</div>
+                      <div class="task">Task 6</div>
+                    </div>
+                  </div>
+                  <div class="thread-lane multi">
+                    <div class="thread-label">Thread 3</div>
+                    <div class="task-flow">
+                      <div class="task">Task 3</div>
+                      <div class="task">Task 7</div>
+                    </div>
+                  </div>
+                  <div class="thread-lane multi">
+                    <div class="thread-label">Thread 4</div>
+                    <div class="task-flow">
+                      <div class="task">Task 4</div>
+                      <div class="task">Task 8</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="thread-pros-cons">
+                  <div class="pros">
+                    <h4><i class="fas fa-check-circle"></i> Advantages</h4>
+                    <ul>
+                      <li>True parallelism</li>
+                      <li>Better CPU utilization</li>
+                      <li>Non-blocking operations</li>
+                      <li>High performance</li>
+                    </ul>
+                  </div>
+                  <div class="cons">
+                    <h4><i class="fas fa-times-circle"></i> Disadvantages</h4>
+                    <ul>
+                      <li>Race conditions</li>
+                      <li>Complex debugging</li>
+                      <li>Synchronization overhead</li>
+                      <li>Deadlocks possible</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 6: JavaScript Single-Threaded Nature -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2>
+              <i class="fas fa-arrow-right"></i> JavaScript Single-Threaded
+              Execution
+            </h2>
+            <div class="thread-explanation">
+              <div class="thread-visual">
+                <div class="main-thread">
+                  <i class="fas fa-arrow-right"></i>
+                  <h3>Main Thread</h3>
+                  <div class="thread-flow">
+                    <div class="code-block">Parse Code</div>
+                    <div class="arrow">→</div>
+                    <div class="code-block">Execute</div>
+                    <div class="arrow">→</div>
+                    <div class="code-block">Handle Events</div>
+                    <div class="arrow">→</div>
+                    <div class="code-block">Update UI</div>
+                  </div>
+                </div>
+              </div>
+              <div class="implications">
+                <h3>What This Means</h3>
+                <div class="implication-grid">
+                  <div class="implication good">
+                    <i class="fas fa-check-circle"></i>
+                    <h4>Simple Mental Model</h4>
+                    <p>No complex thread synchronization</p>
+                  </div>
+                  <div class="implication good">
+                    <i class="fas fa-check-circle"></i>
+                    <h4>No Race Conditions</h4>
+                    <p>Variables can't be modified simultaneously</p>
+                  </div>
+                  <div class="implication challenge">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h4>Blocking Operations</h4>
+                    <p>Long-running tasks freeze the UI</p>
+                  </div>
+                  <div class="implication challenge">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h4>Performance Limits</h4>
+                    <p>Can't utilize multiple CPU cores directly</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 7: Synchronous vs Asynchronous -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-clock"></i> Synchronous vs Asynchronous</h2>
+            <div class="sync-async-comparison">
+              <div class="comparison-column">
+                <div class="comparison-header sync">
+                  <i class="fas fa-arrow-down"></i>
+                  <h3>Synchronous</h3>
+                  <p>Blocking execution</p>
+                </div>
+                <div class="code-example">
+                  <pre><code>console.log('First');
+console.log('Second');
+console.log('Third');</code></pre>
+                </div>
+                <div class="execution-flow">
+                  <div class="step">1. First → Output</div>
+                  <div class="step">2. Second → Output</div>
+                  <div class="step">3. Third → Output</div>
+                </div>
+                <div class="characteristics">
+                  <h4>Characteristics:</h4>
+                  <ul>
+                    <li>Predictable order</li>
+                    <li>Blocks until complete</li>
+                    <li>Simple to understand</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="comparison-column">
+                <div class="comparison-header async">
+                  <i class="fas fa-random"></i>
+                  <h3>Asynchronous</h3>
+                  <p>Non-blocking execution</p>
+                </div>
+                <div class="code-example">
+                  <pre><code>console.log('First');
+setTimeout(() => console.log('Second'), 0);
+console.log('Third');</code></pre>
+                </div>
+                <div class="execution-flow">
+                  <div class="step">1. First → Output</div>
+                  <div class="step">2. Third → Output</div>
+                  <div class="step">3. Second → Output (later)</div>
+                </div>
+                <div class="characteristics">
+                  <h4>Characteristics:</h4>
+                  <ul>
+                    <li>Non-blocking</li>
+                    <li>Unpredictable order</li>
+                    <li>Requires coordination</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 8: Why Asynchronous Programming? -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2>
+              <i class="fas fa-question-circle"></i> Why Asynchronous
+              Programming?
+            </h2>
+            <div class="async-benefits">
+              <div class="benefit-card">
+                <i class="fas fa-mouse-pointer"></i>
+                <h3>Responsive User Interface</h3>
+                <p>UI remains interactive while operations run in background</p>
+                <div class="example">
+                  <strong>Example:</strong> Loading data while user can still
+                  scroll
+                </div>
+              </div>
+              <div class="benefit-card">
+                <i class="fas fa-network-wired"></i>
+                <h3>Network Operations</h3>
+                <p>Don't wait for slow network requests to complete</p>
+                <div class="example">
+                  <strong>Example:</strong> Fetching API data, file uploads
+                </div>
+              </div>
+              <div class="benefit-card">
+                <i class="fas fa-database"></i>
+                <h3>I/O Operations</h3>
+                <p>File reading, database queries don't block execution</p>
+                <div class="example">
+                  <strong>Example:</strong> Reading large files, database
+                  queries
+                </div>
+              </div>
+              <div class="benefit-card">
+                <i class="fas fa-tachometer-alt"></i>
+                <h3>Better Performance</h3>
+                <p>Efficient resource utilization and perceived speed</p>
+                <div class="example">
+                  <strong>Example:</strong> Parallel API calls, lazy loading
+                </div>
+              </div>
+            </div>
+            <div class="async-challenges">
+              <h3>Challenges</h3>
+              <div class="challenge-list">
+                <div class="challenge">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  <span>Complex debugging</span>
+                </div>
+                <div class="challenge">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  <span>Error handling complexity</span>
+                </div>
+                <div class="challenge">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  <span>Callback hell</span>
+                </div>
+                <div class="challenge">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  <span>Race conditions</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 9: Concurrency Models -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-sitemap"></i> Concurrency Models</h2>
+            <div class="concurrency-models">
+              <div class="model-card">
+                <div class="model-header">
+                  <i class="fas fa-layer-group"></i>
+                  <h3>Multi-threading</h3>
+                  <span class="model-type">Traditional</span>
+                </div>
+                <div class="model-content">
+                  <p>Multiple threads execute simultaneously</p>
+                  <div class="pros-cons">
+                    <div class="pros">
+                      <h4>Pros:</h4>
+                      <ul>
+                        <li>True parallelism</li>
+                        <li>CPU utilization</li>
+                      </ul>
+                    </div>
+                    <div class="cons">
+                      <h4>Cons:</h4>
+                      <ul>
+                        <li>Complex synchronization</li>
+                        <li>Race conditions</li>
+                        <li>Deadlocks</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="model-card">
+                <div class="model-header">
+                  <i class="fas fa-sync-alt"></i>
+                  <h3>Event Loop</h3>
+                  <span class="model-type">JavaScript</span>
+                </div>
+                <div class="model-content">
+                  <p>Single thread with asynchronous event handling</p>
+                  <div class="pros-cons">
+                    <div class="pros">
+                      <h4>Pros:</h4>
+                      <ul>
+                        <li>No synchronization issues</li>
+                        <li>Simple mental model</li>
+                        <li>Efficient I/O</li>
+                      </ul>
+                    </div>
+                    <div class="cons">
+                      <h4>Cons:</h4>
+                      <ul>
+                        <li>CPU-bound limitations</li>
+                        <li>Callback complexity</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="model-card">
+                <div class="model-header">
+                  <i class="fas fa-users"></i>
+                  <h3>Actor Model</h3>
+                  <span class="model-type">Erlang/Elixir</span>
+                </div>
+                <div class="model-content">
+                  <p>Isolated processes communicate via messages</p>
+                  <div class="pros-cons">
+                    <div class="pros">
+                      <h4>Pros:</h4>
+                      <ul>
+                        <li>Fault tolerance</li>
+                        <li>Scalability</li>
+                      </ul>
+                    </div>
+                    <div class="cons">
+                      <h4>Cons:</h4>
+                      <ul>
+                        <li>Message passing overhead</li>
+                        <li>Complex debugging</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 10: Callback Functions - Definition -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-phone"></i> What is a Callback?</h2>
+            <div class="callback-definition">
+              <div class="definition-card">
+                <i class="fas fa-lightbulb"></i>
+                <h3>Definition</h3>
+                <p>
+                  A function passed as an argument to another function, to be
+                  executed later
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 11: Simple Callback Example -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-code"></i> Simple Callback Example</h2>
+            <div class="example-section">
+              <div class="code-example">
+                <pre><code>function greet(name, callback) {
+  console.log('Hello ' + name);
+  callback();
+}
+
+function sayGoodbye() {
+  console.log('Goodbye!');
+}
+
+greet('Alice', sayGoodbye);
+// Output: Hello Alice
+// Output: Goodbye!</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 12: Array Methods with Callbacks -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-list"></i> Array Methods with Callbacks</h2>
+            <div class="example-section">
+              <div class="code-example">
+                <pre><code>const numbers = [1, 2, 3, 4, 5];
+
+// map() uses a callback to transform each element
+const doubled = numbers.map(function(num) {
+  return num * 2;
+});
+
+// filter() uses a callback to test each element
+const evens = numbers.filter(function(num) {
+  return num % 2 === 0;
+});
+
+console.log(doubled); // [2, 4, 6, 8, 10]
+console.log(evens);   // [2, 4]</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 13: Synchronous Callbacks -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-sync"></i> Synchronous Callbacks</h2>
+            <div class="pattern-description">
+              <p>Executed immediately in the same thread</p>
+              <div class="code-example">
+                <pre><code>function processData(data, callback) {
+  const result = data.toUpperCase();
+  callback(result); // Executes immediately
+}
+
+processData('hello', function(result) {
+  console.log(result); // HELLO
+});</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 14: Asynchronous Callbacks -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-clock"></i> Asynchronous Callbacks</h2>
+            <div class="pattern-description">
+              <p>Executed later when an operation completes</p>
+              <div class="code-example">
+                <pre><code>function fetchData(callback) {
+  setTimeout(() => {
+    const data = 'Server response';
+    callback(data); // Executes after 1 second
+  }, 1000);
+}
+
+fetchData(function(data) {
+  console.log(data); // Server response
+});</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 16: Callback Hell -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-fire"></i> Callback Hell</h2>
+            <div class="callback-hell">
+              <div class="hell-intro">
+                <div class="problem-card">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  <h3>The Problem</h3>
+                  <p>
+                    Nested callbacks create deeply nested code that's hard to
+                    read and maintain
+                  </p>
+                </div>
+              </div>
+
+              <div class="hell-example">
+                <h3>📜 The "Pyramid of Doom"</h3>
+                <div class="code-example hell-code">
+                  <pre><code>// This is what happens with nested callbacks
+getData(function(a) {
+  getMoreData(a, function(b) {
+    getEvenMoreData(b, function(c) {
+      getYetMoreData(c, function(d) {
+        getFinalData(d, function(e) {
+          // Finally! But at what cost?
+          console.log('Final result:', e);
+        });
+      });
+    });
+  });
+});</code></pre>
+                </div>
+              </div>
+
+              <div class="hell-problems">
+                <h3>🚨 Why This Is Bad</h3>
+                <div class="problems-grid">
+                  <div class="problem-item">
+                    <i class="fas fa-eye-slash"></i>
+                    <h4>Hard to Read</h4>
+                    <p>Code flows to the right instead of down</p>
+                  </div>
+                  <div class="problem-item">
+                    <i class="fas fa-bug"></i>
+                    <h4>Error Handling Nightmare</h4>
+                    <p>Each callback needs its own error handling</p>
+                  </div>
+                  <div class="problem-item">
+                    <i class="fas fa-tools"></i>
+                    <h4>Hard to Debug</h4>
+                    <p>Stack traces become confusing</p>
+                  </div>
+                  <div class="problem-item">
+                    <i class="fas fa-recycle"></i>
+                    <h4>Not Reusable</h4>
+                    <p>Logic is tightly coupled</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="hell-solutions">
+                <h3>✅ Solutions</h3>
+                <div class="solutions-grid">
+                  <div class="solution-item">
+                    <i class="fas fa-user-tie"></i>
+                    <h4>Named Functions</h4>
+                    <p>Break callbacks into named functions</p>
+                  </div>
+                  <div class="solution-item">
+                    <i class="fas fa-handshake"></i>
+                    <h4>Promises</h4>
+                    <p>Chain operations with .then()</p>
+                  </div>
+                  <div class="solution-item">
+                    <i class="fas fa-magic"></i>
+                    <h4>Async/Await</h4>
+                    <p>Write async code like sync code</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 13: Table of Contents -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-list"></i> What We'll Master</h2>
+            <div class="toc-grid">
+              <div class="toc-item">
+                <i class="fas fa-circle-play"></i>
+                <h3>Event Loop</h3>
+                <p>Core mechanism</p>
+              </div>
+              <div class="toc-item">
+                <i class="fas fa-layer-group"></i>
+                <h3>Call Stack</h3>
+                <p>Execution order</p>
+              </div>
+              <div class="toc-item">
+                <i class="fas fa-clock"></i>
+                <h3>Timers</h3>
+                <p>setTimeout & setInterval</p>
+              </div>
+              <div class="toc-item">
+                <i class="fas fa-handshake"></i>
+                <h3>Promises</h3>
+                <p>Async patterns</p>
+              </div>
+              <div class="toc-item">
+                <i class="fas fa-film"></i>
+                <h3>requestAnimationFrame</h3>
+                <p>Smooth animations</p>
+              </div>
+              <div class="toc-item">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Error Handling</h3>
+                <p>Async error patterns</p>
+              </div>
+              <div class="toc-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <h3>Debouncing & Throttling</h3>
+                <p>Performance patterns</p>
+              </div>
+              <div class="toc-item">
+                <i class="fas fa-stop-circle"></i>
+                <h3>AbortController</h3>
+                <p>Modern cancellation</p>
+              </div>
+              <div class="toc-item">
+                <i class="fas fa-bug"></i>
+                <h3>Debugging & Performance</h3>
+                <p>DevTools & profiling</p>
+              </div>
+              <div class="toc-item">
+                <i class="fas fa-users"></i>
+                <h3>Web Workers</h3>
+                <p>True parallelism</p>
+              </div>
+              <div class="toc-item">
+                <i class="fas fa-code"></i>
+                <h3>Interactive Demos</h3>
+                <p>Live coding & visualization</p>
+              </div>
+              <div class="toc-item">
+                <i class="fas fa-star"></i>
+                <h3>Best Practices</h3>
+                <p>Do's and don'ts</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 14: Event Loop Introduction -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-circle-play"></i> What is the Event Loop?</h2>
+            <div class="concept-visual">
+              <div class="concept-card">
+                <i class="fas fa-lightbulb"></i>
+                <h3>Single-threaded</h3>
+                <p>JavaScript runs on one main thread</p>
+              </div>
+              <div class="concept-card">
+                <i class="fas fa-arrows-spin"></i>
+                <h3>Non-blocking</h3>
+                <p>Async operations don't freeze UI</p>
+              </div>
+              <div class="concept-card">
+                <i class="fas fa-list-ol"></i>
+                <h3>Ordered</h3>
+                <p>Operations follow priority rules</p>
+              </div>
+            </div>
+            <div class="demo-section">
+              <button class="demo-button" onclick="runEventLoopDemo()">
+                <i class="fas fa-play"></i> See It In Action
+              </button>
+              <div id="eventLoopOutput" class="demo-output"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 15: Event Loop Components -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-cogs"></i> Event Loop Components</h2>
+            <div class="components-visual">
+              <div class="component">
+                <div class="component-icon">
+                  <i class="fas fa-layer-group"></i>
+                </div>
+                <h3>Call Stack</h3>
+                <p>LIFO execution of functions</p>
+                <div class="component-demo">
+                  <div class="stack-visual">
+                    <div class="stack-item">function3()</div>
+                    <div class="stack-item">function2()</div>
+                    <div class="stack-item">function1()</div>
+                    <div class="stack-item">main()</div>
+                  </div>
+                </div>
+              </div>
+              <div class="component">
+                <div class="component-icon">
+                  <i class="fas fa-clock"></i>
+                </div>
+                <h3>Task Queue</h3>
+                <p>Macrotasks (setTimeout, events)</p>
+                <div class="component-demo">
+                  <div class="queue-visual">
+                    <div class="queue-item">setTimeout</div>
+                    <div class="queue-item">click event</div>
+                    <div class="queue-item">fetch callback</div>
+                  </div>
+                </div>
+              </div>
+              <div class="component">
+                <div class="component-icon">
+                  <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Microtask Queue</h3>
+                <p>Promises, queueMicrotask</p>
+                <div class="component-demo">
+                  <div class="queue-visual">
+                    <div class="queue-item priority">Promise.then</div>
+                    <div class="queue-item priority">queueMicrotask</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 16: Execution Order Demo -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-sort-numeric-down"></i> Execution Order</h2>
+            <div class="execution-demo">
+              <div class="code-example">
+                <pre><code>console.log('1 - Sync');
+
+setTimeout(() => console.log('4 - Macro'), 0);
+
+Promise.resolve().then(() => console.log('3 - Micro'));
+
+console.log('2 - Sync');</code></pre>
+              </div>
+              <div class="demo-controls">
+                <button
+                  class="demo-button"
+                  onclick="demonstrateExecutionOrder()"
+                >
+                  <i class="fas fa-play"></i> Run Demo
+                </button>
+                <button
+                  class="demo-button secondary"
+                  onclick="clearOutput('executionOutput')"
+                >
+                  <i class="fas fa-trash"></i> Clear
+                </button>
+              </div>
+              <div id="executionOutput" class="demo-output"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 17: setTimeout Deep Dive -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-clock"></i> setTimeout Deep Dive</h2>
+            <div class="timer-demo">
+              <div class="timer-facts">
+                <div class="fact">
+                  <i class="fas fa-info-circle"></i>
+                  <span>setTimeout(fn, 0) doesn't run immediately</span>
+                </div>
+                <div class="fact">
+                  <i class="fas fa-info-circle"></i>
+                  <span>Minimum delay is 4ms in browsers</span>
+                </div>
+                <div class="fact">
+                  <i class="fas fa-info-circle"></i>
+                  <span>Goes to macrotask queue</span>
+                </div>
+              </div>
+              <div class="timer-controls">
+                <button class="demo-button" onclick="demonstrateSetTimeout()">
+                  <i class="fas fa-clock"></i> setTimeout Demo
+                </button>
+                <button class="demo-button" onclick="demonstrateZeroTimeout()">
+                  <i class="fas fa-question"></i> setTimeout(0) Test
+                </button>
+                <button class="demo-button" onclick="demonstrateSetInterval()">
+                  <i class="fas fa-repeat"></i> setInterval Demo
+                </button>
+              </div>
+              <div id="timerOutput" class="demo-output"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 18: Promises Introduction -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-handshake"></i> Promises</h2>
+            <div class="promise-intro">
+              <div class="promise-states">
+                <div class="state pending">
+                  <i class="fas fa-clock"></i>
+                  <h3>Pending</h3>
+                  <p>Initial state</p>
+                </div>
+                <div class="state fulfilled">
+                  <i class="fas fa-check-circle"></i>
+                  <h3>Fulfilled</h3>
+                  <p>Success</p>
+                </div>
+                <div class="state rejected">
+                  <i class="fas fa-times-circle"></i>
+                  <h3>Rejected</h3>
+                  <p>Error</p>
+                </div>
+              </div>
+              <div class="promise-demo">
+                <button class="demo-button" onclick="demoPromiseStates()">
+                  <i class="fas fa-play"></i> See Promise States
+                </button>
+                <div id="promiseOutput" class="demo-output"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 19: async/await -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-magic"></i> async / await</h2>
+            <div class="async-demo">
+              <div class="code-comparison">
+                <div class="code-block">
+                  <h3>Promise Chains</h3>
+                  <pre><code>fetch('/api/data')
+  .then(response => response.json())
+  .then(data => processData(data))
+  .catch(error => handleError(error));</code></pre>
+                </div>
+                <div class="code-block">
+                  <h3>async/await</h3>
+                  <pre><code>try {
+  const response = await fetch('/api/data');
+  const data = await response.json();
+  processData(data);
+} catch (error) {
+  handleError(error);
+}</code></pre>
+                </div>
+              </div>
+              <div class="async-controls">
+                <button class="demo-button" onclick="demoAsyncAwait()">
+                  <i class="fas fa-play"></i> async/await Demo
+                </button>
+                <div id="asyncOutput" class="demo-output"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 20: Promise.all -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-layer-group"></i> Promise.all</h2>
+            <div class="promise-all-demo">
+              <div class="concept-explanation">
+                <div class="explanation-card">
+                  <i class="fas fa-users"></i>
+                  <h3>Wait for All</h3>
+                  <p>Resolves when all promises resolve</p>
+                </div>
+                <div class="explanation-card">
+                  <i class="fas fa-bolt"></i>
+                  <h3>Parallel Execution</h3>
+                  <p>Runs promises simultaneously</p>
+                </div>
+                <div class="explanation-card">
+                  <i class="fas fa-times"></i>
+                  <h3>Fail Fast</h3>
+                  <p>Rejects if any promise rejects</p>
+                </div>
+              </div>
+              <div class="demo-controls">
+                <button class="demo-button" onclick="demoPromiseAll()">
+                  <i class="fas fa-play"></i> Promise.all Demo
+                </button>
+                <div id="promiseAllOutput" class="demo-output"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 20.1: Promise.all Example -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2>
+              <i class="fas fa-layer-group"></i> Promise.all - Practical Example
+            </h2>
+            <div class="promise-example">
+              <div class="example-description">
+                <p>
+                  Fetching multiple APIs simultaneously for better performance
+                </p>
+              </div>
+              <div class="code-example">
+                <pre><code>const [users, posts] = await Promise.all([
+  fetch('/users'),
+  fetch('/posts')
+]);</code></pre>
+              </div>
+              <div class="demo-controls">
+                <button class="demo-button" onclick="demoPromiseAllExample()">
+                  <i class="fas fa-play"></i> Run Promise.all Demo
+                </button>
+                <div id="promiseAllExampleOutput" class="demo-output"></div>
+              </div>
+              <div class="example-benefits">
+                <div class="benefit-item">
+                  <i class="fas fa-rocket"></i>
+                  <span>Parallel execution - faster than sequential</span>
+                </div>
+                <div class="benefit-item">
+                  <i class="fas fa-code"></i>
+                  <span>Clean destructuring syntax</span>
+                </div>
+                <div class="benefit-item">
+                  <i class="fas fa-shield-alt"></i>
+                  <span>All-or-nothing error handling</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 21: Promise.race -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-flag-checkered"></i> Promise.race</h2>
+            <div class="promise-race-demo">
+              <div class="race-visual">
+                <div class="racer">
+                  <i class="fas fa-rocket"></i>
+                  <span>Fast Promise (500ms)</span>
+                </div>
+                <div class="racer">
+                  <i class="fas fa-car"></i>
+                  <span>Medium Promise (1000ms)</span>
+                </div>
+                <div class="racer">
+                  <i class="fas fa-walking"></i>
+                  <span>Slow Promise (2000ms)</span>
+                </div>
+              </div>
+              <div class="demo-controls">
+                <button class="demo-button" onclick="demoPromiseRace()">
+                  <i class="fas fa-play"></i> Start the Race!
+                </button>
+                <div id="promiseRaceOutput" class="demo-output"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 21.1: Promise.race Example -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2>
+              <i class="fas fa-flag-checkered"></i> Promise.race - Practical
+              Example
+            </h2>
+            <div class="promise-example">
+              <div class="example-description">
+                <p>Get the fastest response from multiple API endpoints</p>
+              </div>
+              <div class="code-example">
+                <pre><code>const winner = await Promise.race([
+  fetchFastAPI(),
+  fetchSlowAPI()
+]);</code></pre>
+              </div>
+              <div class="demo-controls">
+                <button class="demo-button" onclick="demoPromiseRaceExample()">
+                  <i class="fas fa-play"></i> Run Promise.race Demo
+                </button>
+                <div id="promiseRaceExampleOutput" class="demo-output"></div>
+              </div>
+              <div class="example-benefits">
+                <div class="benefit-item">
+                  <i class="fas fa-trophy"></i>
+                  <span>First to resolve wins</span>
+                </div>
+                <div class="benefit-item">
+                  <i class="fas fa-clock"></i>
+                  <span>Perfect for timeouts and fallbacks</span>
+                </div>
+                <div class="benefit-item">
+                  <i class="fas fa-network-wired"></i>
+                  <span>Redundant API calls for reliability</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 22: Promise.allSettled -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-balance-scale"></i> Promise.allSettled</h2>
+            <div class="allsettled-demo">
+              <div class="settled-explanation">
+                <div class="explanation-item">
+                  <i class="fas fa-check-double"></i>
+                  <h3>Wait for All to Settle</h3>
+                  <p>Doesn't short-circuit on rejection</p>
+                </div>
+                <div class="explanation-item">
+                  <i class="fas fa-list-check"></i>
+                  <h3>Get All Results</h3>
+                  <p>Returns status and value/reason for each</p>
+                </div>
+              </div>
+              <div class="demo-controls">
+                <button class="demo-button" onclick="demoPromiseAllSettled()">
+                  <i class="fas fa-play"></i> allSettled Demo
+                </button>
+                <div id="allSettledOutput" class="demo-output"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 22.1: Promise.allSettled Example -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2>
+              <i class="fas fa-balance-scale"></i> Promise.allSettled -
+              Practical Example
+            </h2>
+            <div class="promise-example">
+              <div class="example-description">
+                <p>Handle multiple API calls where some might fail</p>
+              </div>
+              <div class="code-example">
+                <pre><code>const results = await Promise.allSettled([
+  fetchAPI1(),
+  fetchAPI2()
+]);
+
+// النتيجة بتكون بالشكل ده:
+// [
+//   {status: "fulfilled", value: ...},
+//   {status: "rejected", reason: ...}
+// ]</code></pre>
+              </div>
+              <div class="demo-controls">
+                <button
+                  class="demo-button"
+                  onclick="demoPromiseAllSettledExample()"
+                >
+                  <i class="fas fa-play"></i> Run Promise.allSettled Demo
+                </button>
+                <div
+                  id="promiseAllSettledExampleOutput"
+                  class="demo-output"
+                ></div>
+              </div>
+              <div class="example-benefits">
+                <div class="benefit-item">
+                  <i class="fas fa-shield-alt"></i>
+                  <span>Never rejects - always resolves</span>
+                </div>
+                <div class="benefit-item">
+                  <i class="fas fa-list-check"></i>
+                  <span>Get status and result for each promise</span>
+                </div>
+                <div class="benefit-item">
+                  <i class="fas fa-balance-scale"></i>
+                  <span>Perfect for partial success scenarios</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 23: Microtasks vs Macrotasks -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2>
+              <i class="fas fa-balance-scale-right"></i> Microtasks vs
+              Macrotasks
+            </h2>
+            <div class="task-comparison">
+              <div class="task-column">
+                <div class="task-header microtask">
+                  <i class="fas fa-bolt"></i>
+                  <h3>Microtasks</h3>
+                  <span class="priority">Higher Priority</span>
+                </div>
+                <ul class="task-list">
+                  <li>Promise.then/catch/finally</li>
+                  <li>queueMicrotask()</li>
+                  <li>MutationObserver</li>
+                </ul>
+              </div>
+              <div class="task-column">
+                <div class="task-header macrotask">
+                  <i class="fas fa-clock"></i>
+                  <h3>Macrotasks</h3>
+                  <span class="priority">Lower Priority</span>
+                </div>
+                <ul class="task-list">
+                  <li>setTimeout/setInterval</li>
+                  <li>Event callbacks</li>
+                  <li>I/O operations</li>
+                </ul>
+              </div>
+            </div>
+            <div class="demo-controls">
+              <button class="demo-button" onclick="demoMicrotaskVsMacrotask()">
+                <i class="fas fa-play"></i> Priority Demo
+              </button>
+              <div id="priorityOutput" class="demo-output"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 24: Web Workers Introduction -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-users"></i> Web Workers</h2>
+            <div class="worker-intro">
+              <div class="worker-concept">
+                <div class="concept-item">
+                  <i class="fas fa-microchip"></i>
+                  <h3>True Parallelism</h3>
+                  <p>Separate threads from main thread</p>
+                </div>
+                <div class="concept-item">
+                  <i class="fas fa-shield-alt"></i>
+                  <h3>UI Protection</h3>
+                  <p>Heavy computation doesn't block UI</p>
+                </div>
+                <div class="concept-item">
+                  <i class="fas fa-comments"></i>
+                  <h3>Message Passing</h3>
+                  <p>Communication via postMessage</p>
+                </div>
+              </div>
+              <div class="worker-demo">
+                <button class="demo-button" onclick="startWorkerDemo()">
+                  <i class="fas fa-play"></i> Heavy Computation Demo
+                </button>
+                <button class="demo-button" onclick="startUITest()">
+                  <i class="fas fa-mouse-pointer"></i> UI Responsiveness Test
+                </button>
+                <div class="progress-container">
+                  <div id="workerProgress" class="progress-bar"></div>
+                </div>
+                <div id="workerOutput" class="demo-output"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 22: Error Handling - Patterns -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2>
+              <i class="fas fa-exclamation-triangle"></i> Error Handling in
+              Async Code
+            </h2>
+            <div class="error-patterns">
+              <div class="pattern-card">
+                <h3><i class="fas fa-handshake"></i> Promise Error Handling</h3>
+                <div class="code-example">
+                  <pre><code>// Using .catch()
+fetch('/api/data')
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
+
+// Using async/await with try/catch
+async function fetchData() {
+  try {
+    const response = await fetch('/api/data');
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 23: Error Handling - Multiple Promises -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2>
+              <i class="fas fa-layer-group"></i> Multiple Promise Error Handling
+            </h2>
+            <div class="pattern-card">
+              <h3>Promise.allSettled - Never rejects</h3>
+              <div class="code-example">
+                <pre><code>const results = await Promise.allSettled([
+  fetch('/api/users'),
+  fetch('/api/posts'),
+  fetch('/api/comments')
+]);
+
+results.forEach((result, index) => {
+  if (result.status === 'rejected') {
+    console.error(`Request ${index} failed:`, result.reason);
+  }
+});</code></pre>
+              </div>
+            </div>
+            <div class="error-demo">
+              <h3>Interactive Error Demo</h3>
+              <div class="demo-controls">
+                <button class="demo-button" onclick="demoSuccessfulPromise()">
+                  <i class="fas fa-check"></i> Successful Promise
+                </button>
+                <button class="demo-button" onclick="demoFailedPromise()">
+                  <i class="fas fa-times"></i> Failed Promise
+                </button>
+                <button class="demo-button" onclick="demoMixedPromises()">
+                  <i class="fas fa-balance-scale"></i> Mixed Results
+                </button>
+              </div>
+              <div id="errorOutput" class="demo-output"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 24: Debouncing -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-clock"></i> Debouncing</h2>
+            <div class="pattern-section">
+              <div class="pattern-header debounce">
+                <i class="fas fa-clock"></i>
+                <h3>Wait for pause in events</h3>
+                <p>Only executes after events stop</p>
+              </div>
+
+              <div class="code-example">
+                <pre><code>function debounce(func, delay) {
+  let timeoutId;
+  return function(...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => 
+      func.apply(this, args), delay);
+  };
+}
+
+// Usage: Search input
+const debouncedSearch = debounce(search, 300);</code></pre>
+              </div>
+              <div class="use-cases">
+                <h4>Perfect for:</h4>
+                <ul>
+                  <li>Search input</li>
+                  <li>Resize events</li>
+                  <li>API calls</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 26: Performance Patterns Demo -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-play"></i> Performance Patterns Demo</h2>
+            <div class="interactive-demo">
+              <h3>Interactive Demo</h3>
+              <div class="demo-area">
+                <div class="enhanced-input-container">
+                  <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Type to search (debounced)..."
+                    class="enhanced-search-input"
+                  />
+                </div>
+                <button id="clickButton" class="demo-button enhanced-button">
+                  <i class="fas fa-mouse-pointer"></i>
+                  Click me (throttled)
+                </button>
+                <div class="demo-counters">
+                  <div class="counter-item">
+                    <i class="fas fa-hand-pointer"></i>
+                    <span>Events: <span id="eventCount">0</span></span>
+                  </div>
+                  <div class="counter-item">
+                    <i class="fas fa-cogs"></i>
+                    <span>Executions: <span id="executionCount">0</span></span>
+                  </div>
+                </div>
+              </div>
+              <div class="demo-controls">
+                <button
+                  class="demo-button secondary"
+                  onclick="clearPerformanceDemo()"
+                >
+                  <i class="fas fa-trash"></i> Clear
+                </button>
+              </div>
+              <div id="performanceOutput" class="demo-output"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 27: AbortController - Concept -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2>
+              <i class="fas fa-stop-circle"></i> AbortController - Modern
+              Cancellation
+            </h2>
+            <div class="concept-visual">
+              <div class="concept-card">
+                <i class="fas fa-hand-paper"></i>
+                <h3>Cancel Operations</h3>
+                <p>
+                  Modern way to cancel fetch requests, timeouts, and other async
+                  operations
+                </p>
+              </div>
+              <div class="concept-card">
+                <i class="fas fa-memory"></i>
+                <h3>Prevent Memory Leaks</h3>
+                <p>
+                  Avoid callbacks from completed operations affecting unmounted
+                  components
+                </p>
+              </div>
+              <div class="concept-card">
+                <i class="fas fa-bolt"></i>
+                <h3>Better UX</h3>
+                <p>
+                  Cancel slow requests when user navigates away or changes input
+                </p>
+              </div>
+            </div>
+            <div class="example-section">
+              <h3>Basic Usage</h3>
+              <div class="code-example">
+                <pre><code>// Create controller
+const controller = new AbortController();
+const signal = controller.signal;
+
+// Use with fetch
+fetch('/api/data', { signal })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => {
+    if (error.name === 'AbortError') {
+      console.log('Request was cancelled');
+    }
+  });
+
+// Cancel the request
+controller.abort();</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 28: AbortController - Advanced Usage -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-clock"></i> AbortController with Timeout</h2>
+            <div class="example-section">
+              <h3>Auto-cancel after timeout</h3>
+              <div class="code-example">
+                <pre><code>async function fetchWithTimeout(url, timeout = 5000) {
+  const controller = new AbortController();
+  setTimeout(() => controller.abort(), timeout);
+  
+  try {
+    const response = await fetch(url, { 
+      signal: controller.signal 
+    });
+    return await response.json();
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      throw new Error('Request timeout');
+    }
+    throw error;
+  }
+}</code></pre>
+              </div>
+            </div>
+            <div class="abort-demo">
+              <h3>Interactive Demo</h3>
+              <div class="demo-controls">
+                <button class="demo-button" onclick="startLongRequest()">
+                  <i class="fas fa-download"></i> Start Long Request
+                </button>
+                <button class="demo-button secondary" onclick="cancelRequest()">
+                  <i class="fas fa-stop"></i> Cancel Request
+                </button>
+                <button class="demo-button" onclick="requestWithTimeout()">
+                  <i class="fas fa-clock"></i> Request with Timeout
+                </button>
+              </div>
+              <div id="abortOutput" class="demo-output"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 31: Event Loop Visualizer -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-eye"></i> Event Loop Visualizer</h2>
+            <div class="visualizer-container">
+              <div class="code-and-visualizer">
+                <div class="visualizer-code">
+                  <h3>Example Code</h3>
+                  <pre><code id="visualizerCode">console.log('Start');
+
+setTimeout(() => {
+  console.log('Timeout');
+}, 0);
+
+Promise.resolve().then(() => {
+  console.log('Promise');
+});
+
+console.log('End');</code></pre>
+                  <div class="execution-steps">
+                    <h4>Execution Steps:</h4>
+                    <div id="executionSteps" class="steps-list"></div>
+                  </div>
+                </div>
+                <div class="visualizer">
+                  <div class="queue-container">
+                    <div class="queue-box call-stack">
+                      <h4><i class="fas fa-layer-group"></i> Call Stack</h4>
+                      <div id="visualCallStack" class="queue-content">
+                        <div class="empty-state">Empty</div>
+                      </div>
+                    </div>
+                    <div class="queue-box task-queue">
+                      <h4>
+                        <i class="fas fa-clock"></i> Task Queue (Macrotasks)
+                      </h4>
+                      <div id="visualTaskQueue" class="queue-content">
+                        <div class="empty-state">Empty</div>
+                      </div>
+                    </div>
+                    <div class="queue-box microtask-queue">
+                      <h4><i class="fas fa-bolt"></i> Microtask Queue</h4>
+                      <div id="visualMicrotaskQueue" class="queue-content">
+                        <div class="empty-state">Empty</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="event-loop-indicator">
+                    <div class="event-loop-circle">
+                      <i class="fas fa-sync-alt" id="eventLoopIcon"></i>
+                      <span>Event Loop</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="visualizer-controls">
+                <button
+                  class="demo-button"
+                  onclick="startEventLoopVisualization()"
+                >
+                  <i class="fas fa-play"></i> Start Animation
+                </button>
+                <button class="demo-button" onclick="stepThroughExecution()">
+                  <i class="fas fa-step-forward"></i> Step Through
+                </button>
+                <button
+                  class="demo-button secondary"
+                  onclick="resetVisualization()"
+                >
+                  <i class="fas fa-redo"></i> Reset
+                </button>
+                <button
+                  class="demo-button secondary"
+                  onclick="loadDifferentExample()"
+                >
+                  <i class="fas fa-exchange-alt"></i> Different Example
+                </button>
+              </div>
+              <div class="output-section">
+                <h4><i class="fas fa-terminal"></i> Console Output</h4>
+                <div id="visualizerOutput" class="console-output"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 32: Best Practices -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-star"></i> Best Practices</h2>
+            <div class="best-practices">
+              <div class="practice-section do">
+                <h3><i class="fas fa-check-circle"></i> Do</h3>
+                <ul>
+                  <li>
+                    <i class="fas fa-check"></i> Use async/await for readability
+                  </li>
+                  <li>
+                    <i class="fas fa-check"></i> Handle errors with try/catch
+                  </li>
+                  <li>
+                    <i class="fas fa-check"></i> Use Promise.all for parallel
+                    ops
+                  </li>
+                  <li>
+                    <i class="fas fa-check"></i> Avoid blocking the main thread
+                  </li>
+                </ul>
+              </div>
+              <div class="practice-section dont">
+                <h3><i class="fas fa-times-circle"></i> Don't</h3>
+                <ul>
+                  <li>
+                    <i class="fas fa-times"></i> Mix callbacks with promises
+                  </li>
+                  <li><i class="fas fa-times"></i> Forget error handling</li>
+                  <li><i class="fas fa-times"></i> Use sync ops in loops</li>
+                  <li>
+                    <i class="fas fa-times"></i> Create unnecessary promises
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 33: Performance Tips -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-tachometer-alt"></i> Performance Tips</h2>
+            <div class="performance-tips">
+              <div class="tip-card">
+                <i class="fas fa-bolt"></i>
+                <h3>Batch DOM Updates</h3>
+                <p>Group DOM manipulations to avoid layout thrashing</p>
+              </div>
+              <div class="tip-card">
+                <i class="fas fa-users"></i>
+                <h3>Use Web Workers</h3>
+                <p>Offload heavy computation to background threads</p>
+              </div>
+              <div class="tip-card">
+                <i class="fas fa-clock"></i>
+                <h3>Debounce Events</h3>
+                <p>Limit frequency of expensive operations</p>
+              </div>
+              <div class="tip-card">
+                <i class="fas fa-memory"></i>
+                <h3>Clean Up Resources</h3>
+                <p>Clear timers and remove event listeners</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 34: Common Pitfalls -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-exclamation-triangle"></i> Common Pitfalls</h2>
+            <div class="pitfalls">
+              <div class="pitfall">
+                <div class="pitfall-icon">
+                  <i class="fas fa-bug"></i>
+                </div>
+                <h3>Unhandled Promise Rejections</h3>
+                <p>Always use .catch() or try/catch with async/await</p>
+              </div>
+              <div class="pitfall">
+                <div class="pitfall-icon">
+                  <i class="fas fa-infinity"></i>
+                </div>
+                <h3>Memory Leaks</h3>
+                <p>Clear intervals and remove event listeners</p>
+              </div>
+              <div class="pitfall">
+                <div class="pitfall-icon">
+                  <i class="fas fa-turtle"></i>
+                </div>
+                <h3>Blocking Main Thread</h3>
+                <p>Use setTimeout or Web Workers for heavy tasks</p>
+              </div>
+              <div class="pitfall">
+                <div class="pitfall-icon">
+                  <i class="fas fa-random"></i>
+                </div>
+                <h3>Race Conditions</h3>
+                <p>Be careful with shared state in async code</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 36: Real-world Examples -->
+        <div class="slide">
+          <div class="slide-content">
+            <h2><i class="fas fa-globe"></i> Real-world Applications</h2>
+            <div class="real-world">
+              <div class="example">
+                <i class="fas fa-download"></i>
+                <h3>File Upload</h3>
+                <p>Progress tracking with async operations</p>
+              </div>
+              <div class="example">
+                <i class="fas fa-search"></i>
+                <h3>Search Autocomplete</h3>
+                <p>Debounced API calls with Promise cancellation</p>
+              </div>
+              <div class="example">
+                <i class="fas fa-chart-line"></i>
+                <h3>Data Processing</h3>
+                <p>Web Workers for heavy calculations</p>
+              </div>
+              <div class="example">
+                <i class="fas fa-sync"></i>
+                <h3>Real-time Updates</h3>
+                <p>WebSocket events with Promise coordination</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 35: Conclusion -->
+        <div class="slide">
+          <div class="slide-content conclusion-slide">
+            <h1><i class="fas fa-graduation-cap"></i> Congratulations!</h1>
+            <h2>You've Mastered JavaScript Concurrency</h2>
+            <div class="achievements">
+              <div class="achievement">
+                <i class="fas fa-trophy"></i>
+                <span>Event Loop Expert</span>
+              </div>
+              <div class="achievement">
+                <i class="fas fa-trophy"></i>
+                <span>Promise Master</span>
+              </div>
+              <div class="achievement">
+                <i class="fas fa-trophy"></i>
+                <span>Async Ninja</span>
+              </div>
+              <div class="achievement">
+                <i class="fas fa-trophy"></i>
+                <span>Performance Pro</span>
+              </div>
+            </div>
+            <div class="final-message">
+              <p>
+                🎉 You're now ready to build high-performance async JavaScript
+                applications!
+              </p>
+              <button class="demo-button" onclick="goToSlide(1)">
+                <i class="fas fa-redo"></i> Restart Presentation
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-indicator" id="scrollIndicator">
+      <i class="fas fa-chevron-down"></i>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="js/modern-slider.js"></script>
+    <script src="js/modern-demos.js"></script>
+  </body>
+</html>
